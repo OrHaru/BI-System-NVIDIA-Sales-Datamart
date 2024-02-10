@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{C9674DCB-5085-4A16-B785-4C70DD1589BD}") = "STG_DIM_PRODUCTS_DM_NVIDIA", "STG_DIM_PRODUCTS_DM_NVIDIA\STG_DIM_PRODUCTS_DM_NVIDIA.dtproj", "{27490EB2-5369-486D-8D6F-C20D745317AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27490EB2-5369-486D-8D6F-C20D745317AD}.Development|Default.ActiveCfg = Development
+		{27490EB2-5369-486D-8D6F-C20D745317AD}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0118AEFA-D3C8-4FCF-A20F-4D82C90A5923}
+	EndGlobalSection
+EndGlobal

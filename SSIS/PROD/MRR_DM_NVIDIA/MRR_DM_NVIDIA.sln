@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{C9674DCB-5085-4A16-B785-4C70DD1589BD}") = "MRR_DM_NVIDIA", "MRR_DM_NVIDIA\MRR_DM_NVIDIA.dtproj", "{F2993785-E53C-49A3-9299-FA71897E39B2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2993785-E53C-49A3-9299-FA71897E39B2}.Development|Default.ActiveCfg = Development
+		{F2993785-E53C-49A3-9299-FA71897E39B2}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {407D68C2-C959-4EBB-AF46-BA85F41EB921}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,1285 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/25/2024 1:26:51 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-KKUDGF3"
+  DTS:CreatorName="DESKTOP-KKUDGF3\Or's"
+  DTS:DTSID="{185B82DB-EF92-46F5-97F4-CDFDA02D863B}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5396.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="26"
+  DTS:VersionGUID="{562AE714-CFA6-4A8C-BB4C-CD3B2CB70683}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{5A73BCD2-E636-40AF-8237-B7760975581F}"
+      DTS:ObjectName="DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA">
+      <DTS:PropertyExpression
+        DTS:Name="InitialCatalog">@[$Project::Database]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=DESKTOP-KKUDGF3;Initial Catalog=DEV_Sales_DM_NVIDIA;Provider=SQLOLEDB.1;Integrated Security=SSPI;Application Name=SSIS-Package1-{5A73BCD2-E636-40AF-8237-B7760975581F}DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{AEEE48CA-B7A8-4EAA-8CF2-6738E6F7894E}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="DIMProductsCount">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{2734A47F-A8E7-45FB-A429-2F75EB413585}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="StartDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\DIMProducts TransferTable Insert"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{3485d72f-a21e-4b16-841f-245653fd086d}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DIMProducts TransferTable Insert"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{5A73BCD2-E636-40AF-8237-B7760975581F}"
+          SQLTask:SqlStatementSource="INSERT INTO TransferTable&#xA;VALUES ('DIMProducts Insert', ?, GETDATE(),?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="NewParameterName"
+            SQLTask:DtsVariableName="User::StartDate"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="146"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="NewParameterName"
+            SQLTask:DtsVariableName="User::DIMProductsCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DIM_Products"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{C40CA987-5C69-48FC-A526-979AFD245F3E}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DIM_Products"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\DIM_Products\Data Conversion"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DIM_Products\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DIM_Products\Data Conversion.Inputs[Data Conversion Input].Columns[ProductName]"
+                      cachedCodepage="1255"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="ProductName"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[ProductName]" />
+                    <inputColumn
+                      refId="Package\DIM_Products\Data Conversion.Inputs[Data Conversion Input].Columns[SubCategoryName]"
+                      cachedCodepage="1255"
+                      cachedDataType="str"
+                      cachedLength="80"
+                      cachedName="SubCategoryName"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[SubCategoryName]" />
+                    <inputColumn
+                      refId="Package\DIM_Products\Data Conversion.Inputs[Data Conversion Input].Columns[CategoryName]"
+                      cachedDataType="wstr"
+                      cachedLength="20"
+                      cachedName="CategoryName"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[CategoryName]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\DIM_Products\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductName]"
+                      name="Copy of ProductName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[ProductName]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SubCategoryName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="80"
+                      lineageId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SubCategoryName]"
+                      name="Copy of SubCategoryName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[SubCategoryName]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of CategoryName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="20"
+                      lineageId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of CategoryName]"
+                      name="Copy of CategoryName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[CategoryName]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\DIM_Products\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DIM_Products\Derived Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DIM_Products\Derived Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DIM_Products\Derived Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\DIM_Products\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM_Products\Derived Column.Outputs[Derived Column Output].Columns[IsAvailable]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="1"
+                      lineageId="Package\DIM_Products\Derived Column.Outputs[Derived Column Output].Columns[IsAvailable]"
+                      name="IsAvailable"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">"Y"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">"Y"</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DIM_Products\Derived Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\DIM_Products\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM_Products\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DIM_Products\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DIM_Products\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DIM_Products\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DIM_Products\Insert Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Insert Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[DimProducts]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DIM_Products\Insert Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA]"
+                  connectionManagerRefId="Package.ConnectionManagers[DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].Columns[ProductID]"
+                      cachedDataType="i4"
+                      cachedName="ProductID"
+                      externalMetadataColumnId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductID]"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[ProductID]" />
+                    <inputColumn
+                      refId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].Columns[Copy of ProductName]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of ProductName"
+                      externalMetadataColumnId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductName]"
+                      lineageId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductName]" />
+                    <inputColumn
+                      refId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].Columns[Copy of SubCategoryName]"
+                      cachedDataType="wstr"
+                      cachedLength="80"
+                      cachedName="Copy of SubCategoryName"
+                      externalMetadataColumnId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].ExternalColumns[SubCategoryName]"
+                      lineageId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SubCategoryName]" />
+                    <inputColumn
+                      refId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].Columns[Copy of CategoryName]"
+                      cachedDataType="wstr"
+                      cachedLength="20"
+                      cachedName="Copy of CategoryName"
+                      externalMetadataColumnId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].ExternalColumns[CategoryName]"
+                      lineageId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of CategoryName]" />
+                    <inputColumn
+                      refId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].Columns[IsAvailable]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="IsAvailable"
+                      externalMetadataColumnId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsAvailable]"
+                      lineageId="Package\DIM_Products\Derived Column.Outputs[Derived Column Output].Columns[IsAvailable]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductID]"
+                      dataType="i4"
+                      name="ProductID" />
+                    <externalMetadataColumn
+                      refId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductName]"
+                      dataType="wstr"
+                      length="50"
+                      name="ProductName" />
+                    <externalMetadataColumn
+                      refId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].ExternalColumns[SubCategoryName]"
+                      dataType="wstr"
+                      length="30"
+                      name="SubCategoryName" />
+                    <externalMetadataColumn
+                      refId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].ExternalColumns[CategoryName]"
+                      dataType="wstr"
+                      length="30"
+                      name="CategoryName" />
+                    <externalMetadataColumn
+                      refId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsAvailable]"
+                      dataType="wstr"
+                      length="1"
+                      name="IsAvailable" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DIM_Products\Insert Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM_Products\Insert Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DIM_Products\Insert Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DIM_Products\Insert Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DIM_Products\Insert Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DIM_Products\Lookup"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[DimProducts]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[DimProducts]) [refTable]
+where [refTable].[ProductID] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="ProductID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductName" dataType="DT_WSTR" length="50" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="SubCategoryName" dataType="DT_WSTR" length="30" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CategoryName" dataType="DT_WSTR" length="30" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="IsAvailable" dataType="DT_WSTR" length="1" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[ProductID]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DIM_Products\Lookup.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA]"
+                  connectionManagerRefId="Package.ConnectionManagers[DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DIM_Products\Lookup.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DIM_Products\Lookup.Inputs[Lookup Input].Columns[ProductID]"
+                      cachedDataType="i4"
+                      cachedName="ProductID"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[ProductID]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductID</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DIM_Products\Lookup.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\DIM_Products\Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DIM_Products\Lookup.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\DIM_Products\Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DIM_Products\Lookup.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\DIM_Products\Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM_Products\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DIM_Products\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DIM_Products\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DIM_Products\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DIM_Products\Row Count"
+              componentClassID="Microsoft.RowCount"
+              contactInfo="Row Count;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Counts rows as they pass through a data flow. For example, use the number of rows processed to determine whether or not to perform cleanup operations, or update text in an e-mail message to communicate processing status."
+              name="Row Count">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable to hold the row count."
+                  name="VariableName">User::DIMProductsCount</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\DIM_Products\Row Count.Inputs[Row Count Input 1]"
+                  hasSideEffects="true"
+                  name="Row Count Input 1">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DIM_Products\Row Count.Outputs[Row Count Output 1]"
+                  name="Row Count Output 1"
+                  synchronousInputId="Package\DIM_Products\Row Count.Inputs[Row Count Input 1]">
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DIM_Products\STG_PRODUCTS"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="STG_PRODUCTS"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[STG_Products]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DIM_Products\STG_PRODUCTS.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA]"
+                  connectionManagerRefId="Package.ConnectionManagers[DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[ProductID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].ExternalColumns[ProductID]"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[ProductID]"
+                      name="ProductID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[ProductName]"
+                      codePage="1255"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].ExternalColumns[ProductName]"
+                      length="50"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[ProductName]"
+                      name="ProductName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[SubCategoryName]"
+                      codePage="1255"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].ExternalColumns[SubCategoryName]"
+                      length="80"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[SubCategoryName]"
+                      name="SubCategoryName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[CategoryName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].ExternalColumns[CategoryName]"
+                      length="20"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].Columns[CategoryName]"
+                      name="CategoryName"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].ExternalColumns[ProductID]"
+                      dataType="i4"
+                      name="ProductID" />
+                    <externalMetadataColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].ExternalColumns[ProductName]"
+                      codePage="1255"
+                      dataType="str"
+                      length="50"
+                      name="ProductName" />
+                    <externalMetadataColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].ExternalColumns[SubCategoryName]"
+                      codePage="1255"
+                      dataType="str"
+                      length="80"
+                      name="SubCategoryName" />
+                    <externalMetadataColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output].ExternalColumns[CategoryName]"
+                      dataType="wstr"
+                      length="20"
+                      name="CategoryName" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output].Columns[ProductID]"
+                      dataType="i4"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output].Columns[ProductID]"
+                      name="ProductID" />
+                    <outputColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output].Columns[ProductName]"
+                      codePage="1255"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output].Columns[ProductName]"
+                      name="ProductName" />
+                    <outputColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output].Columns[SubCategoryName]"
+                      codePage="1255"
+                      dataType="str"
+                      length="80"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output].Columns[SubCategoryName]"
+                      name="SubCategoryName" />
+                    <outputColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output].Columns[CategoryName]"
+                      dataType="wstr"
+                      length="20"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output].Columns[CategoryName]"
+                      name="CategoryName" />
+                    <outputColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\DIM_Products.Paths[Data Conversion Output]"
+              endId="Package\DIM_Products\Lookup.Inputs[Lookup Input]"
+              name="Data Conversion Output"
+              startId="Package\DIM_Products\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\DIM_Products.Paths[Derived Column Output]"
+              endId="Package\DIM_Products\Row Count.Inputs[Row Count Input 1]"
+              name="Derived Column Output"
+              startId="Package\DIM_Products\Derived Column.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DIM_Products.Paths[Lookup No Match Output]"
+              endId="Package\DIM_Products\Derived Column.Inputs[Derived Column Input]"
+              name="Lookup No Match Output"
+              startId="Package\DIM_Products\Lookup.Outputs[Lookup No Match Output]" />
+            <path
+              refId="Package\DIM_Products.Paths[OLE DB Source Output]"
+              endId="Package\DIM_Products\Data Conversion.Inputs[Data Conversion Input]"
+              name="OLE DB Source Output"
+              startId="Package\DIM_Products\STG_PRODUCTS.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\DIM_Products.Paths[Row Count Output 1]"
+              endId="Package\DIM_Products\Insert Destination.Inputs[OLE DB Destination Input]"
+              name="Row Count Output 1"
+              startId="Package\DIM_Products\Row Count.Outputs[Row Count Output 1]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Execute SQL Task"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{21FD133B-D9F3-490F-B689-2D261207FF3B}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Execute SQL Task"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{5A73BCD2-E636-40AF-8237-B7760975581F}"
+          SQLTask:SqlStatementSource="MERGE [dbo].[DimProducts] AS [Target]&#xA;USING [dbo].[STG_Products] AS [Source]&#xA;ON [Target].[ProductID]=[Source].ProductID&#xA;&#xA; -- &#xA;WHEN MATCHED AND &#xA;([Target].ProductName!=[Source].ProductName&#xA;OR[Target].SubCategoryName!=[Source].SubCategoryName&#xA;OR[Target].CategoryName!=[Source].CategoryName)&#xA;&#xA; THEN UPDATE SET &#xA;[Target].ProductName=[Source].ProductName&#xA;,[Target].SubCategoryName=[Source].SubCategoryName&#xA;,[Target].CategoryName=[Source].CategoryName&#xA;&#xA;--&#xA;WHEN NOT MATCHED BY Source &#xA;THEN UPDATE SET &#xA;TARGET.IsAvailable  = 'N';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\StartDate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{e0aa8ba1-edc4-42dd-a7d7-9e20a1fa653c}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="StartDate"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{5A73BCD2-E636-40AF-8237-B7760975581F}"
+          SQLTask:SqlStatementSource="SELECT GETDATE() as StartDate"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="StartDate"
+            SQLTask:DtsVariableName="User::StartDate" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{207CAD83-DAAF-4C63-AC1D-509D651E426D}"
+      DTS:From="Package\StartDate"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Execute SQL Task" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{69B83653-F93B-4DAD-8F30-1E2A8C7F26F6}"
+      DTS:From="Package\DIM_Products"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\DIMProducts TransferTable Insert" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{74DDAFEF-B945-43C6-803C-14D9B52BAF16}"
+      DTS:From="Package\Execute SQL Task"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\DIM_Products" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="145,42"
+          Id="Package\DIM_Products"
+          TopLeft="684,313" />
+        <NodeLayout
+          Size="238,42"
+          Id="Package\DIMProducts TransferTable Insert"
+          TopLeft="625,471" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Execute SQL Task"
+          TopLeft="975,302" />
+        <NodeLayout
+          Size="124,42"
+          Id="Package\StartDate"
+          TopLeft="867,129" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="929,171">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="127.5,131"
+              Start="0,0"
+              End="127.5,123.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,61.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,61.5"
+                    Point2="0,65.5"
+                    Point3="4,65.5" />
+                  <mssgle:LineSegment
+                    End="123.5,65.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="123.5,65.5"
+                    Point2="127.5,65.5"
+                    Point3="127.5,69.5" />
+                  <mssgle:LineSegment
+                    End="127.5,123.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="756.5,355">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-12.5,116"
+              Start="0,0"
+              End="-12.5,108.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,54" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,54"
+                    Point2="0,58"
+                    Point3="-4,58" />
+                  <mssgle:LineSegment
+                    End="-8.5,58" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-8.5,58"
+                    Point2="-12.5,58"
+                    Point3="-12.5,62" />
+                  <mssgle:LineSegment
+                    End="-12.5,108.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="975,323">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-146,11"
+              Start="0,0"
+              End="-138.5,11">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-69,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-69,0"
+                    Point2="-73,0"
+                    Point3="-73,4" />
+                  <mssgle:LineSegment
+                    End="-73,7" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-73,7"
+                    Point2="-73,11"
+                    Point3="-77,11" />
+                  <mssgle:LineSegment
+                    End="-138.5,11" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\DIM_Products">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="157,42"
+          Id="Package\DIM_Products\STG_PRODUCTS"
+          TopLeft="235.5,5.49999999999989" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\DIM_Products\Insert Destination"
+          TopLeft="225.5,474.5" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\DIM_Products\Row Count"
+          TopLeft="223,324.5" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\DIM_Products\Derived Column"
+          TopLeft="246,237" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\DIM_Products\Data Conversion"
+          TopLeft="236,107.5" />
+        <EdgeLayout
+          Id="Package\DIM_Products.Paths[OLE DB Source Output]"
+          TopLeft="314,47.4999999999999">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DIM_Products.Paths[Row Count Output 1]"
+          TopLeft="288,366.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="19,108"
+              Start="0,0"
+              End="19,100.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,50" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,50"
+                    Point2="0,54"
+                    Point3="4,54" />
+                  <mssgle:LineSegment
+                    End="15,54" />
+                  <mssgle:CubicBezierSegment
+                    Point1="15,54"
+                    Point2="19,54"
+                    Point3="19,58" />
+                  <mssgle:LineSegment
+                    End="19,100.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="113,42"
+          Id="Package\DIM_Products\Lookup"
+          TopLeft="474,162" />
+        <EdgeLayout
+          Id="Package\DIM_Products.Paths[Data Conversion Output]"
+          TopLeft="392,128.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="82,54.5"
+              Start="0,0"
+              End="74.5,54.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="37,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="37,0"
+                    Point2="41,0"
+                    Point3="41,4" />
+                  <mssgle:LineSegment
+                    End="41,50.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="41,50.5"
+                    Point2="41,54.5"
+                    Point3="45,54.5" />
+                  <mssgle:LineSegment
+                    End="74.5,54.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DIM_Products.Paths[Lookup No Match Output]"
+          TopLeft="530.5,204">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-207.5,33"
+              Start="0,0"
+              End="-207.5,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,12.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,12.5"
+                    Point2="0,16.5"
+                    Point3="-4,16.5" />
+                  <mssgle:LineSegment
+                    End="-203.5,16.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-203.5,16.5"
+                    Point2="-207.5,16.5"
+                    Point3="-207.5,20.5" />
+                  <mssgle:LineSegment
+                    End="-207.5,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-159.55638671875,21.5,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DIM_Products.Paths[Derived Column Output]"
+          TopLeft="323,279">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-35,45.5"
+              Start="0,0"
+              End="-35,38">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18.75"
+                    Point2="0,22.75"
+                    Point3="-4,22.75" />
+                  <mssgle:LineSegment
+                    End="-31,22.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-31,22.75"
+                    Point2="-35,22.75"
+                    Point3="-35,26.75" />
+                  <mssgle:LineSegment
+                    End="-35,38" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\DIM_Products\STG_PRODUCTS">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DIM_Products\Insert Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DIM_Products\Lookup">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[DimProducts]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

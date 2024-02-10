@@ -1,0 +1,1801 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/25/2024 4:18:15 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-KKUDGF3"
+  DTS:CreatorName="DESKTOP-KKUDGF3\Or's"
+  DTS:DTSID="{9A116CD1-8E9C-4688-B9B3-5011A64BFEDE}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5396.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="13"
+  DTS:VersionGUID="{4CDDEA11-E69F-461A-94EB-CBF422CF6583}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{09473514-272C-4276-8129-951A86BA6D94}"
+      DTS:ObjectName="DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=DESKTOP-KKUDGF3;Initial Catalog=PROD_Sales_DM_NVIDIA;Provider=SQLOLEDB.1;Integrated Security=SSPI;Application Name=SSIS-Package1-{09473514-272C-4276-8129-951A86BA6D94}DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{ED93512B-1266-42A6-BAF9-9F638A8324D0}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="FactSalesCount">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{018178F6-8652-4D75-95CA-DCBBF732B334}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="StartDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\FactSales TransferTable Insert"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{355889f5-7d31-48c9-9698-619ac5657010}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="FactSales TransferTable Insert"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{09473514-272C-4276-8129-951A86BA6D94}"
+          SQLTask:SqlStatementSource="INSERT INTO TransferTable&#xA;VALUES ('FactSales Insert', ?, GETDATE(),?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="NewParameterName"
+            SQLTask:DtsVariableName="User::StartDate"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="146"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="NewParameterName"
+            SQLTask:DtsVariableName="User::FactSalesCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Fact_Sales"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{CB0F27E9-09C1-4BA5-81E1-64AFADA0AF1C}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Fact_Sales"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Fact_Sales\Conditional Split"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Conditional Split"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Fact_Sales\Conditional Split.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Conditional Split.Inputs[Conditional Split Input].Columns[AgentID]"
+                      cachedDataType="i8"
+                      cachedName="AgentID"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[AgentID]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Fact_Sales\Conditional Split.Outputs[77777]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="77777"
+                  synchronousInputId="Package\Fact_Sales\Conditional Split.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[AgentID]} == 77777</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">AgentID == 77777</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Fact_Sales\Conditional Split.Outputs[Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Default Output"
+                  synchronousInputId="Package\Fact_Sales\Conditional Split.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Fact_Sales\Conditional Split.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\Fact_Sales\Conditional Split.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fact_Sales\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Fact_Sales\Data Conversion"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Fact_Sales\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Data Conversion.Inputs[Data Conversion Input].Columns[OrderDate]"
+                      cachedCodepage="1255"
+                      cachedDataType="str"
+                      cachedLength="30"
+                      cachedName="OrderDate"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[OrderDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Fact_Sales\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Fact_Sales\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fact_Sales\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of OrderDate]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Fact_Sales\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of OrderDate]"
+                      name="Copy of OrderDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[OrderDate]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Fact_Sales\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Fact_Sales\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fact_Sales\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Fact_Sales\Derived Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Fact_Sales\Derived Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Derived Column.Inputs[Derived Column Input].Columns[Price]"
+                      cachedDataType="r8"
+                      cachedName="Price"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Price]" />
+                    <inputColumn
+                      refId="Package\Fact_Sales\Derived Column.Inputs[Derived Column Input].Columns[Discount]"
+                      cachedDataType="r8"
+                      cachedName="Discount"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Discount]" />
+                    <inputColumn
+                      refId="Package\Fact_Sales\Derived Column.Inputs[Derived Column Input].Columns[Quantity]"
+                      cachedDataType="i8"
+                      cachedName="Quantity"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Quantity]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Fact_Sales\Derived Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Fact_Sales\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fact_Sales\Derived Column.Outputs[Derived Column Output].Columns[Total]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Fact_Sales\Derived Column.Outputs[Derived Column Output].Columns[Total]"
+                      name="Total"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Price]} * #{Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Quantity]} * (1 - #{Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Discount]}) * 1.17</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">Price * Quantity * (1 - Discount) * 1.17</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Fact_Sales\Derived Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Fact_Sales\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fact_Sales\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Fact_Sales\Derived Column 1"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column 1"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Fact_Sales\Derived Column 1.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Derived Column 1.Inputs[Derived Column Input].Columns[AgentID]"
+                      cachedDataType="i8"
+                      cachedName="AgentID"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[AgentID]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">777</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">777</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Fact_Sales\Derived Column 1.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Fact_Sales\Derived Column 1.Inputs[Derived Column Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Fact_Sales\Derived Column 1.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Fact_Sales\Derived Column 1.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fact_Sales\Derived Column 1.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\Derived Column 1.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Derived Column 1.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\Derived Column 1.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Fact_Sales\Fact_Sales"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Fact_Sales"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[FactSales]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">true</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">true</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Fact_Sales\Fact_Sales.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA]"
+                  connectionManagerRefId="Package.ConnectionManagers[DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].Columns[OrderID]"
+                      cachedDataType="i8"
+                      cachedName="OrderID"
+                      externalMetadataColumnId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[OrderID]"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[OrderID]" />
+                    <inputColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].Columns[ProductID]"
+                      cachedDataType="i8"
+                      cachedName="ProductID"
+                      externalMetadataColumnId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[ProductID]"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[ProductID]" />
+                    <inputColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].Columns[Price]"
+                      cachedDataType="r8"
+                      cachedName="Price"
+                      externalMetadataColumnId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[Price]"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Price]" />
+                    <inputColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].Columns[Discount]"
+                      cachedDataType="r8"
+                      cachedName="Discount"
+                      externalMetadataColumnId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[Discount]"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Discount]" />
+                    <inputColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].Columns[Quantity]"
+                      cachedDataType="i8"
+                      cachedName="Quantity"
+                      externalMetadataColumnId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[Quantity]"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Quantity]" />
+                    <inputColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].Columns[CustomerID]"
+                      cachedDataType="i8"
+                      cachedName="CustomerID"
+                      externalMetadataColumnId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[CustomerID]"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[CustomerID]" />
+                    <inputColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].Columns[TerritoryID]"
+                      cachedDataType="i4"
+                      cachedName="TerritoryID"
+                      externalMetadataColumnId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[TerritoryID]"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[TerritoryID]" />
+                    <inputColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].Columns[AgentID]"
+                      cachedDataType="i8"
+                      cachedName="AgentID"
+                      externalMetadataColumnId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeID]"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[AgentID]" />
+                    <inputColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].Columns[Total]"
+                      cachedDataType="r8"
+                      cachedName="Total"
+                      externalMetadataColumnId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[Total]"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Total]" />
+                    <inputColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].Columns[Copy of OrderDate]"
+                      cachedDataType="dbDate"
+                      cachedName="Copy of OrderDate"
+                      externalMetadataColumnId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[OrderDate]"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Copy of OrderDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[OrderID]"
+                      dataType="i4"
+                      name="OrderID" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[OrderDate]"
+                      dataType="wstr"
+                      length="10"
+                      name="OrderDate" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[CustomerID]"
+                      dataType="i4"
+                      name="CustomerID" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeID]"
+                      dataType="i4"
+                      name="EmployeeID" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[TerritoryID]"
+                      dataType="i4"
+                      name="TerritoryID" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[ProductID]"
+                      dataType="i4"
+                      name="ProductID" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[Quantity]"
+                      dataType="i4"
+                      name="Quantity" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[Price]"
+                      dataType="numeric"
+                      name="Price"
+                      precision="15"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[Discount]"
+                      dataType="numeric"
+                      name="Discount"
+                      precision="15"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input].ExternalColumns[Total]"
+                      dataType="numeric"
+                      name="Total"
+                      precision="15"
+                      scale="2" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Fact_Sales\Fact_Sales.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\Fact_Sales.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Fact_Sales.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\Fact_Sales.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Fact_Sales\Row Count"
+              componentClassID="Microsoft.RowCount"
+              contactInfo="Row Count;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Counts rows as they pass through a data flow. For example, use the number of rows processed to determine whether or not to perform cleanup operations, or update text in an e-mail message to communicate processing status."
+              name="Row Count">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable to hold the row count."
+                  name="VariableName">User::FactSalesCount</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Fact_Sales\Row Count.Inputs[Row Count Input 1]"
+                  hasSideEffects="true"
+                  name="Row Count Input 1">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Fact_Sales\Row Count.Outputs[Row Count Output 1]"
+                  name="Row Count Output 1"
+                  synchronousInputId="Package\Fact_Sales\Row Count.Inputs[Row Count Input 1]">
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Fact_Sales\STG_Sales"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="STG_Sales"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[STG_Sales]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Fact_Sales\STG_Sales.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA]"
+                  connectionManagerRefId="Package.ConnectionManagers[DESKTOP-KKUDGF3.PROD_Sales_DM_NVIDIA]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[OrderID]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[OrderID]"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[OrderID]"
+                      name="OrderID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[ProductID]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[ProductID]"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[ProductID]"
+                      name="ProductID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Price]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[Price]"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Price]"
+                      name="Price"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Discount]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[Discount]"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Discount]"
+                      name="Discount"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Quantity]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[Quantity]"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Quantity]"
+                      name="Quantity"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[OrderDate]"
+                      codePage="1255"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[OrderDate]"
+                      length="30"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[OrderDate]"
+                      name="OrderDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[CustomerID]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[CustomerID]"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[CustomerID]"
+                      name="CustomerID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[AgentID]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[AgentID]"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[AgentID]"
+                      name="AgentID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[TerritoryID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[TerritoryID]"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[TerritoryID]"
+                      name="TerritoryID"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[OrderID]"
+                      dataType="i8"
+                      name="OrderID" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[ProductID]"
+                      dataType="i8"
+                      name="ProductID" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[Price]"
+                      dataType="r8"
+                      name="Price" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[Discount]"
+                      dataType="r8"
+                      name="Discount" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[Quantity]"
+                      dataType="i8"
+                      name="Quantity" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[OrderDate]"
+                      codePage="1255"
+                      dataType="str"
+                      length="30"
+                      name="OrderDate" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[CustomerID]"
+                      dataType="i8"
+                      name="CustomerID" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[AgentID]"
+                      dataType="i8"
+                      name="AgentID" />
+                    <externalMetadataColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].ExternalColumns[TerritoryID]"
+                      dataType="i4"
+                      name="TerritoryID" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[OrderID]"
+                      dataType="i8"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[OrderID]"
+                      name="OrderID" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[ProductID]"
+                      dataType="i8"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[ProductID]"
+                      name="ProductID" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[Price]"
+                      dataType="r8"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[Price]"
+                      name="Price" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[Discount]"
+                      dataType="r8"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[Discount]"
+                      name="Discount" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[Quantity]"
+                      dataType="i8"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[Quantity]"
+                      name="Quantity" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[OrderDate]"
+                      codePage="1255"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[OrderDate]"
+                      name="OrderDate" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[CustomerID]"
+                      dataType="i8"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[CustomerID]"
+                      name="CustomerID" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[AgentID]"
+                      dataType="i8"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[AgentID]"
+                      name="AgentID" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[TerritoryID]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[TerritoryID]"
+                      name="TerritoryID" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Fact_Sales\Union All"
+              componentClassID="Microsoft.UnionAll"
+              contactInfo="Union All;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combines rows from multiple data flows without sorting. For example, add rows back to a data flow after correction of errors. If sorting is important, we recommend using the Merge transformation."
+              name="Union All"
+              version="1">
+              <inputs>
+                <input
+                  refId="Package\Fact_Sales\Union All.Inputs[Union All Input 1]"
+                  name="Union All Input 1">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 1].Columns[OrderID]"
+                      cachedDataType="i8"
+                      cachedName="OrderID"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[OrderID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[OrderID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 1].Columns[ProductID]"
+                      cachedDataType="i8"
+                      cachedName="ProductID"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[ProductID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[ProductID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 1].Columns[Price]"
+                      cachedDataType="r8"
+                      cachedName="Price"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Price]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Price]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 1].Columns[Discount]"
+                      cachedDataType="r8"
+                      cachedName="Discount"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Discount]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Discount]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 1].Columns[Quantity]"
+                      cachedDataType="i8"
+                      cachedName="Quantity"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Quantity]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Quantity]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 1].Columns[OrderDate]"
+                      cachedCodepage="1255"
+                      cachedDataType="str"
+                      cachedLength="30"
+                      cachedName="OrderDate"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[OrderDate]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[OrderDate]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 1].Columns[CustomerID]"
+                      cachedDataType="i8"
+                      cachedName="CustomerID"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[CustomerID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[CustomerID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 1].Columns[AgentID]"
+                      cachedDataType="i8"
+                      cachedName="AgentID"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[AgentID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[AgentID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 1].Columns[TerritoryID]"
+                      cachedDataType="i4"
+                      cachedName="TerritoryID"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[TerritoryID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[TerritoryID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 1].Columns[Total]"
+                      cachedDataType="r8"
+                      cachedName="Total"
+                      lineageId="Package\Fact_Sales\Derived Column.Outputs[Derived Column Output].Columns[Total]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Total]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 1].Columns[Copy of OrderDate]"
+                      cachedDataType="dbDate"
+                      cachedName="Copy of OrderDate"
+                      lineageId="Package\Fact_Sales\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of OrderDate]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Copy of OrderDate]}</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\Fact_Sales\Union All.Inputs[Union All Input 2]"
+                  hasSideEffects="true"
+                  name="Union All Input 2">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 2].Columns[OrderID]"
+                      cachedDataType="i8"
+                      cachedName="OrderID"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[OrderID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[OrderID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 2].Columns[ProductID]"
+                      cachedDataType="i8"
+                      cachedName="ProductID"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[ProductID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[ProductID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 2].Columns[Price]"
+                      cachedDataType="r8"
+                      cachedName="Price"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Price]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Price]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 2].Columns[Discount]"
+                      cachedDataType="r8"
+                      cachedName="Discount"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Discount]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Discount]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 2].Columns[Quantity]"
+                      cachedDataType="i8"
+                      cachedName="Quantity"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[Quantity]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Quantity]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 2].Columns[OrderDate]"
+                      cachedCodepage="1255"
+                      cachedDataType="str"
+                      cachedLength="30"
+                      cachedName="OrderDate"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[OrderDate]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[OrderDate]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 2].Columns[CustomerID]"
+                      cachedDataType="i8"
+                      cachedName="CustomerID"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[CustomerID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[CustomerID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 2].Columns[AgentID]"
+                      cachedDataType="i8"
+                      cachedName="AgentID"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[AgentID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[AgentID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 2].Columns[TerritoryID]"
+                      cachedDataType="i4"
+                      cachedName="TerritoryID"
+                      lineageId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output].Columns[TerritoryID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[TerritoryID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 2].Columns[Total]"
+                      cachedDataType="r8"
+                      cachedName="Total"
+                      lineageId="Package\Fact_Sales\Derived Column.Outputs[Derived Column Output].Columns[Total]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Total]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Fact_Sales\Union All.Inputs[Union All Input 2].Columns[Copy of OrderDate]"
+                      cachedDataType="dbDate"
+                      cachedName="Copy of OrderDate"
+                      lineageId="Package\Fact_Sales\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of OrderDate]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Copy of OrderDate]}</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\Fact_Sales\Union All.Inputs[Union All Input 3]"
+                  dangling="true"
+                  hasSideEffects="true"
+                  name="Union All Input 3">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Fact_Sales\Union All.Outputs[Union All Output 1]"
+                  name="Union All Output 1">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[OrderID]"
+                      dataType="i8"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[OrderID]"
+                      name="OrderID" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[ProductID]"
+                      dataType="i8"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[ProductID]"
+                      name="ProductID" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Price]"
+                      dataType="r8"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Price]"
+                      name="Price" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Discount]"
+                      dataType="r8"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Discount]"
+                      name="Discount" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Quantity]"
+                      dataType="i8"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Quantity]"
+                      name="Quantity" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[OrderDate]"
+                      codePage="1255"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[OrderDate]"
+                      name="OrderDate" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[CustomerID]"
+                      dataType="i8"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[CustomerID]"
+                      name="CustomerID" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[AgentID]"
+                      dataType="i8"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[AgentID]"
+                      name="AgentID" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[TerritoryID]"
+                      dataType="i4"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[TerritoryID]"
+                      name="TerritoryID" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Total]"
+                      dataType="r8"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Total]"
+                      name="Total" />
+                    <outputColumn
+                      refId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Copy of OrderDate]"
+                      dataType="dbDate"
+                      lineageId="Package\Fact_Sales\Union All.Outputs[Union All Output 1].Columns[Copy of OrderDate]"
+                      name="Copy of OrderDate" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Fact_Sales.Paths[77777]"
+              endId="Package\Fact_Sales\Derived Column 1.Inputs[Derived Column Input]"
+              name="77777"
+              startId="Package\Fact_Sales\Conditional Split.Outputs[77777]" />
+            <path
+              refId="Package\Fact_Sales.Paths[Data Conversion Output]"
+              endId="Package\Fact_Sales\Conditional Split.Inputs[Conditional Split Input]"
+              name="Data Conversion Output"
+              startId="Package\Fact_Sales\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Fact_Sales.Paths[Default Output]"
+              endId="Package\Fact_Sales\Union All.Inputs[Union All Input 2]"
+              name="Default Output"
+              startId="Package\Fact_Sales\Conditional Split.Outputs[Default Output]" />
+            <path
+              refId="Package\Fact_Sales.Paths[Derived Column Output]"
+              endId="Package\Fact_Sales\Data Conversion.Inputs[Data Conversion Input]"
+              name="Derived Column Output"
+              startId="Package\Fact_Sales\Derived Column.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Fact_Sales.Paths[Derived Column Output1]"
+              endId="Package\Fact_Sales\Union All.Inputs[Union All Input 1]"
+              name="Derived Column Output"
+              startId="Package\Fact_Sales\Derived Column 1.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Fact_Sales.Paths[OLE DB Source Output]"
+              endId="Package\Fact_Sales\Derived Column.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\Fact_Sales\STG_Sales.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Fact_Sales.Paths[Row Count Output 1]"
+              endId="Package\Fact_Sales\Fact_Sales.Inputs[OLE DB Destination Input]"
+              name="Row Count Output 1"
+              startId="Package\Fact_Sales\Row Count.Outputs[Row Count Output 1]" />
+            <path
+              refId="Package\Fact_Sales.Paths[Union All Output 1]"
+              endId="Package\Fact_Sales\Row Count.Inputs[Row Count Input 1]"
+              name="Union All Output 1"
+              startId="Package\Fact_Sales\Union All.Outputs[Union All Output 1]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\StartDate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{68a4fe64-ff05-462f-ab71-cd1200bc61ec}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="StartDate"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{09473514-272C-4276-8129-951A86BA6D94}"
+          SQLTask:SqlStatementSource="SELECT GETDATE() as StartDate"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="StartDate"
+            SQLTask:DtsVariableName="User::StartDate" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{2972A27D-3981-4C7E-80F3-4C8FA43E9028}"
+      DTS:From="Package\StartDate"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Fact_Sales" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{C1AFF3DF-FB44-4D19-9103-25E1B3606A7D}"
+      DTS:From="Package\Fact_Sales"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\FactSales TransferTable Insert" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="129,42"
+          Id="Package\Fact_Sales"
+          TopLeft="748,304" />
+        <NodeLayout
+          Size="222,42"
+          Id="Package\FactSales TransferTable Insert"
+          TopLeft="619,482" />
+        <NodeLayout
+          Size="124,42"
+          Id="Package\StartDate"
+          TopLeft="767,185" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="829,227">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-16.5,77"
+              Start="0,0"
+              End="-16.5,69.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,34.5"
+                    Point2="0,38.5"
+                    Point3="-4,38.5" />
+                  <mssgle:LineSegment
+                    End="-12.5,38.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-12.5,38.5"
+                    Point2="-16.5,38.5"
+                    Point3="-16.5,42.5" />
+                  <mssgle:LineSegment
+                    End="-16.5,69.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="812.5,346">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-82.5,136"
+              Start="0,0"
+              End="-82.5,128.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,64" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,64"
+                    Point2="0,68"
+                    Point3="-4,68" />
+                  <mssgle:LineSegment
+                    End="-78.5,68" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-78.5,68"
+                    Point2="-82.5,68"
+                    Point3="-82.5,72" />
+                  <mssgle:LineSegment
+                    End="-82.5,128.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Fact_Sales">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="128,42"
+          Id="Package\Fact_Sales\STG_Sales"
+          TopLeft="547,64" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Fact_Sales\Derived Column"
+          TopLeft="584,196" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Fact_Sales\Data Conversion"
+          TopLeft="586,282" />
+        <EdgeLayout
+          Id="Package\Fact_Sales.Paths[OLE DB Source Output]"
+          TopLeft="611,106">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="50,90"
+              Start="0,0"
+              End="50,82.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,41" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,41"
+                    Point2="0,45"
+                    Point3="4,45" />
+                  <mssgle:LineSegment
+                    End="46,45" />
+                  <mssgle:CubicBezierSegment
+                    Point1="46,45"
+                    Point2="50,45"
+                    Point3="50,49" />
+                  <mssgle:LineSegment
+                    End="50,82.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Fact_Sales.Paths[Derived Column Output]"
+          TopLeft="662.5,238">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,44"
+              Start="0,0"
+              End="0,36.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,36.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="155,42"
+          Id="Package\Fact_Sales\Conditional Split"
+          TopLeft="761,364" />
+        <EdgeLayout
+          Id="Package\Fact_Sales.Paths[Data Conversion Output]"
+          TopLeft="664,324">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="174.5,40"
+              Start="0,0"
+              End="174.5,32.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,16"
+                    Point2="0,20"
+                    Point3="4,20" />
+                  <mssgle:LineSegment
+                    End="170.5,20" />
+                  <mssgle:CubicBezierSegment
+                    Point1="170.5,20"
+                    Point2="174.5,20"
+                    Point3="174.5,24" />
+                  <mssgle:LineSegment
+                    End="174.5,32.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Fact_Sales\Derived Column 1"
+          TopLeft="847,468" />
+        <EdgeLayout
+          Id="Package\Fact_Sales.Paths[77777]"
+          TopLeft="838.5,406">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="90,62"
+              Start="0,0"
+              End="90,54.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,27"
+                    Point2="0,31"
+                    Point3="4,31" />
+                  <mssgle:LineSegment
+                    End="86,31" />
+                  <mssgle:CubicBezierSegment
+                    Point1="86,31"
+                    Point2="90,31"
+                    Point3="90,35" />
+                  <mssgle:LineSegment
+                    End="90,54.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="30.77287109375,36,28.4542578125,9.2705078125"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="121,42"
+          Id="Package\Fact_Sales\Union All"
+          TopLeft="572,419" />
+        <EdgeLayout
+          Id="Package\Fact_Sales.Paths[Derived Column Output1]"
+          TopLeft="847,489">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-154,-43.3333333333333"
+              Start="0,0"
+              End="-146.5,-43.3333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-85.0091743119266,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-85.0091743119266,0"
+                    Point2="-89.0091743119266,0"
+                    Point3="-89.0091743119266,-4" />
+                  <mssgle:LineSegment
+                    End="-89.0091743119266,-39.3333333333333" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-89.0091743119266,-39.3333333333333"
+                    Point2="-89.0091743119266,-43.3333333333333"
+                    Point3="-93.0091743119266,-43.3333333333333" />
+                  <mssgle:LineSegment
+                    End="-146.5,-43.3333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-97.0091743119266,1,16,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Fact_Sales.Paths[Default Output]"
+          TopLeft="761,385">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-68,49.3333333333333"
+              Start="0,0"
+              End="-60.5,49.3333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-35.302752293578,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-35.302752293578,0"
+                    Point2="-39.302752293578,0"
+                    Point3="-39.302752293578,4" />
+                  <mssgle:LineSegment
+                    End="-39.302752293578,45.3333333333333" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-39.302752293578,45.3333333333333"
+                    Point2="-39.302752293578,49.3333333333333"
+                    Point3="-43.302752293578,49.3333333333333" />
+                  <mssgle:LineSegment
+                    End="-60.5,49.3333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-81.427791356078,-22,84.250078125,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="129,42"
+          Id="Package\Fact_Sales\Fact_Sales"
+          TopLeft="537,589" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\Fact_Sales\Row Count"
+          TopLeft="542,484" />
+        <EdgeLayout
+          Id="Package\Fact_Sales.Paths[Row Count Output 1]"
+          TopLeft="604.25,526">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,63"
+              Start="0,0"
+              End="0,55.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,55.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Fact_Sales.Paths[Union All Output 1]"
+          TopLeft="632.5,461">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-25.5,23"
+              Start="0,0"
+              End="-25.5,15.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,7.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,7.5"
+                    Point2="0,11.5"
+                    Point3="-4,11.5" />
+                  <mssgle:LineSegment
+                    End="-21.5,11.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-21.5,11.5"
+                    Point2="-25.5,11.5"
+                    Point3="-25.5,15.5" />
+                  <mssgle:LineSegment
+                    End="-25.5,15.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Fact_Sales\STG_Sales">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
