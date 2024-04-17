@@ -1,2 +1,2 @@
 # BI System NVIDIA Sales Datamart
- BI System project for NVIDIA's Sales Department (Portfolio)
+ Managed the end-to-end development of a Business Intelligence solution, focusing on practicality and efficiency. Created a detailed specification document outlining S2T mapping, ERD, and a Gantt chart for project tracking. Utilized SQL in SSMS to clean and explore data thoroughly, ensuring its readiness for analysis. Implemented ETL processes via SSIS to seamlessly handle data extraction, transformation, and loading into the Data Warehouse, optimizing data integrity. Lastly, employed Power BI to present user-friendly reports and dashboards, facilitating informed decision-making for stakeholders
